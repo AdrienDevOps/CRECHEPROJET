@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.temps = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.CrecheAffiche = new System.Windows.Forms.Label();
@@ -330,6 +331,7 @@
             this.Controls.Add(this.UniteList);
             this.Controls.Add(this.CrecheAffiche);
             this.Controls.Add(this.temps);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Crèche";
             this.Load += new System.EventHandler(this.Form1_Load);

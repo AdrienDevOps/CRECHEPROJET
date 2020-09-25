@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableauDeBord));
             this.UniteListe = new System.Windows.Forms.TabControl();
             this.EnfantsTotal = new System.Windows.Forms.ListBox();
             this.EnfantDetail = new System.Windows.Forms.Button();
@@ -35,6 +36,7 @@
             this.Detailseffectuee = new System.Windows.Forms.GroupBox();
             this.Texteprevue = new System.Windows.Forms.Label();
             this.texteeffectuees = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.detailsprevue.SuspendLayout();
             this.Detailseffectuee.SuspendLayout();
             this.SuspendLayout();
@@ -101,16 +103,28 @@
             this.texteeffectuees.Size = new System.Drawing.Size(0, 13);
             this.texteeffectuees.TabIndex = 5;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(2, 1);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 39);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Retour";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // TableauDeBord
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1002, 541);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.Detailseffectuee);
             this.Controls.Add(this.detailsprevue);
             this.Controls.Add(this.EnfantDetail);
             this.Controls.Add(this.EnfantsTotal);
             this.Controls.Add(this.UniteListe);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TableauDeBord";
             this.Text = "TableauDeBord";
             this.Load += new System.EventHandler(this.Chargement);
@@ -131,5 +145,6 @@
         private System.Windows.Forms.Label Texteprevue;
         private System.Windows.Forms.GroupBox Detailseffectuee;
         private System.Windows.Forms.Label texteeffectuees;
+        private System.Windows.Forms.Button button1;
     }
 }

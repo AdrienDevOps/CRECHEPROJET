@@ -12,9 +12,5 @@ namespace CRECHEPROJET
         {
             return this.NomCreche;
         }
-        public int GETID()
-        {
-            return this.IDCreche;
-        }
     }
 }

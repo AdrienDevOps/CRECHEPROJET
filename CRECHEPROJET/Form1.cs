@@ -68,7 +68,7 @@ namespace CRECHEPROJET
                 //je selectionne les contrats de l'unité
                 foreach (contrat contrat in ladb.contrat.ToList())
                 {                    
-                    if(contrat.GetIDUnite()== unite.IDUnite)
+                    if(contrat.IDUnite== unite.IDUnite)
                     {
                         contrats.Add(contrat);
                         var acceuilsAttendus = from acceuil in contrat.acceuil
@@ -306,7 +306,7 @@ namespace CRECHEPROJET
         private void TDB_Click(object sender, EventArgs e)
         {
             TableauDeBord tableauDeBord = new TableauDeBord(UniteList,creche,ladb);
-            this.Enabled = false;
+            //this.Enabled = false;
             tableauDeBord.Show();
         }
 

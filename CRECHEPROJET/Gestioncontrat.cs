@@ -8,9 +8,6 @@ namespace CRECHEPROJET
 {
     partial class contrat
     {
-        public int GetIDUnite()
-       {
-            return this.IDUnite;
-       }
+
     }
 }
