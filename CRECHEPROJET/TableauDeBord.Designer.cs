@@ -59,7 +59,7 @@
             // 
             // EnfantDetail
             // 
-            this.EnfantDetail.Location = new System.Drawing.Point(189, 388);
+            this.EnfantDetail.Location = new System.Drawing.Point(187, 397);
             this.EnfantDetail.Name = "EnfantDetail";
             this.EnfantDetail.Size = new System.Drawing.Size(80, 80);
             this.EnfantDetail.TabIndex = 2;

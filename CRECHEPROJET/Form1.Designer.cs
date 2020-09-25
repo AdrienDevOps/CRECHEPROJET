@@ -64,7 +64,7 @@
             this.temps.AutoSize = true;
             this.temps.BackColor = System.Drawing.Color.Transparent;
             this.temps.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.temps.Location = new System.Drawing.Point(522, 73);
+            this.temps.Location = new System.Drawing.Point(473, 57);
             this.temps.Name = "temps";
             this.temps.Size = new System.Drawing.Size(120, 31);
             this.temps.TabIndex = 0;
@@ -80,22 +80,21 @@
             this.CrecheAffiche.AutoSize = true;
             this.CrecheAffiche.BackColor = System.Drawing.Color.Transparent;
             this.CrecheAffiche.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CrecheAffiche.Location = new System.Drawing.Point(528, 30);
+            this.CrecheAffiche.Location = new System.Drawing.Point(665, 9);
             this.CrecheAffiche.Name = "CrecheAffiche";
             this.CrecheAffiche.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.CrecheAffiche.Size = new System.Drawing.Size(147, 25);
             this.CrecheAffiche.TabIndex = 2;
             this.CrecheAffiche.Text = "CrecheAffiche";
             this.CrecheAffiche.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.CrecheAffiche.Click += new System.EventHandler(this.CrecheAffiche_Click_1);
             this.CrecheAffiche.DoubleClick += new System.EventHandler(this.CrecheAffiche_Click);
             // 
             // UniteList
             // 
-            this.UniteList.Location = new System.Drawing.Point(266, 157);
+            this.UniteList.Location = new System.Drawing.Point(131, 91);
             this.UniteList.Name = "UniteList";
             this.UniteList.SelectedIndex = 0;
-            this.UniteList.Size = new System.Drawing.Size(661, 291);
+            this.UniteList.Size = new System.Drawing.Size(779, 480);
             this.UniteList.TabIndex = 3;
             // 
             // DateDeNaissance
@@ -131,9 +130,9 @@
             this.MotDePasse.Controls.Add(this.FermerMotDePasse);
             this.MotDePasse.Controls.Add(this.DateDeNaissance);
             this.MotDePasse.ForeColor = System.Drawing.Color.Black;
-            this.MotDePasse.Location = new System.Drawing.Point(-6, -1);
+            this.MotDePasse.Location = new System.Drawing.Point(-3, 2);
             this.MotDePasse.Name = "MotDePasse";
-            this.MotDePasse.Size = new System.Drawing.Size(1027, 578);
+            this.MotDePasse.Size = new System.Drawing.Size(1025, 575);
             this.MotDePasse.TabIndex = 6;
             this.MotDePasse.TabStop = false;
             this.MotDePasse.Visible = false;
@@ -157,7 +156,6 @@
             this.groupBox1.Size = new System.Drawing.Size(352, 120);
             this.groupBox1.TabIndex = 26;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // BoiteADate
             // 
@@ -167,7 +165,6 @@
             this.BoiteADate.Name = "BoiteADate";
             this.BoiteADate.Size = new System.Drawing.Size(267, 40);
             this.BoiteADate.TabIndex = 25;
-            this.BoiteADate.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // bsupp
             // 
@@ -313,7 +310,7 @@
             // 
             // TDB
             // 
-            this.TDB.Location = new System.Drawing.Point(877, -1);
+            this.TDB.Location = new System.Drawing.Point(889, 2);
             this.TDB.Name = "TDB";
             this.TDB.Size = new System.Drawing.Size(133, 23);
             this.TDB.TabIndex = 7;

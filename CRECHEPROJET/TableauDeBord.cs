@@ -116,7 +116,7 @@ namespace CRECHEPROJET
                     {   //Absent
                         EnfantsAbsent.Items.Add(((acceuil)button.Tag).contrat.enfant.NomEnfant.ToString() + " " + ((acceuil)button.Tag).contrat.enfant.PrenomEnfant.ToString());
                     }
-                    if (button.BackColor==Color.Blue)
+                    if (button.BackColor==Color.Cyan)
                     {   //Partis
                         EnfantsParti.Items.Add(((acceuil)button.Tag).contrat.enfant.NomEnfant.ToString() + " " + ((acceuil)button.Tag).contrat.enfant.PrenomEnfant.ToString());
                     }

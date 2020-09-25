@@ -36,21 +36,7 @@ namespace CRECHEPROJET
             ladb = new mydbEntities();
 
         }
-        private void DateDeNaissancemodif(string nb)
-        {
-
-            if (BoiteADate.Text.Count() == 2 || BoiteADate.Text.Count() == 7)
-            {
-                BoiteADate.Text += " / " + nb;
-                DateDeNaissanceValue.Add(nb);
-            }
-            else if (BoiteADate.Text.Count() < 14)
-            {
-                BoiteADate.Text += nb;
-                DateDeNaissanceValue.Add(nb);
-            }
-
-        }
+       
         private void ChangeCreche()
         {
             //Affichage et Mise à jour  des Unités de la crèche, de la couleur arrière plan)
@@ -105,9 +91,14 @@ namespace CRECHEPROJET
             Labelprevu.Text = "Prévu         Reel" ;
             Labelprevu.Location = new Point(30, 34);
             Labelprevu.Font = new Font(this.Font.Name, 7);
-            H += 155;
-            UniteList.SelectedTab.Controls.Add(ButtonEnfant);
-           
+            if(H==620)
+            {
+                L += 90;
+                H = 0;       
+            }
+            else
+             H += 155;          
+            UniteList.SelectedTab.Controls.Add(ButtonEnfant);          
         }
 
         private void ClicK_Buttun(object sender, EventArgs e)
@@ -115,14 +106,11 @@ namespace CRECHEPROJET
             boutonchoisie = (Button)sender;
             UniteList.Enabled = false;
             CrecheAffiche.Enabled = false;
-            MotDePasse.Show();
-           
-            
+            MotDePasse.Show();           
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             //Initialisation
             temps.Text = DateTime.Now.ToShortTimeString();
             creche = ladb.creche.Distinct().First();
@@ -131,25 +119,8 @@ namespace CRECHEPROJET
         //Timeur qui actualise l'horloge
         private void timer_Tick(object sender, EventArgs e)
         {
-
             temps.Text = DateTime.Now.ToShortTimeString();
-
         }
-        private void CrecheAffiche_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void RetourMotDePasse(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
 
         private void ValideMdp(object sender, EventArgs e)
         {
@@ -162,15 +133,17 @@ namespace CRECHEPROJET
             foreach (enfant gosse in ladb.enfant.ToList())
             {
                 if (gosse.IDenfant == test.contrat.enfant.IDenfant)
-                {
+                { 
+                    if (DateDeNaissanceValue[0] == "0")
+                        DateDeNaissanceValue[0] = "";
+                    if (DateDeNaissanceValue[2] == "0")
+                        DateDeNaissanceValue[2] = "";
                     if (gosse.Datedenaissance.Value.Year.ToString() == (DateDeNaissanceValue[4] + DateDeNaissanceValue[5] + DateDeNaissanceValue[6] + DateDeNaissanceValue[7]) && gosse.Datedenaissance.Value.Month.ToString() == (DateDeNaissanceValue[2] + DateDeNaissanceValue[3]) && gosse.Datedenaissance.Value.Day.ToString() == DateDeNaissanceValue[0] + DateDeNaissanceValue[1])
                     {
                         MessageBox.Show("Connection Réussi !");
-
-
                         if (boutonchoisie.BackColor == Color.Green)
                         {
-                            boutonchoisie.BackColor = Color.Blue;
+                            boutonchoisie.BackColor = Color.Cyan;
                             verif = 1;
                             test.ReelDepart = DateTime.Now;
                             boutonchoisie.Text = test.contrat.enfant.NomEnfant + "   " + test.contrat.enfant.PrenomEnfant + "\n" + "\n" + "\n" + test.PrevuArriver.Value.ToShortTimeString() + "          " + test.ReelArriver.Value.ToShortTimeString() + "\n" + test.PrevuDepart.Value.ToShortTimeString() + "          " + test.ReelDepart.Value.ToShortTimeString();
@@ -185,63 +158,42 @@ namespace CRECHEPROJET
                         MotDePasse.Hide();
                         UniteList.Enabled = true;
                         CrecheAffiche.Enabled = true;
-                        BoiteADate.Text = "";
-                        DateDeNaissanceValue.Clear();
-
-
-
-
                     }
                     else
-                    {
                         MessageBox.Show("Mauvaise Date De naissance");
-                        BoiteADate.Text = "";
-                        DateDeNaissanceValue.Clear();
-                    }
+                    BoiteADate.Text = "";
+                    DateDeNaissanceValue.Clear();
                 }
-                
             }
             foreach (acceuil acceuil in ladb.acceuil.ToList())
             {
                 if (acceuil.IDacceuil == test.IDacceuil)
                 {
                     if (verif == 1)
-                    {
                         acceuil.ReelDepart = DateTime.Now;
-                    }
                     if (verif==2)
-                    acceuil.ReelArriver = DateTime.Now;
+                        acceuil.ReelArriver = DateTime.Now;
                     ladb.SaveChanges();
                 }
-
             }
         }
 
         private void FermeMotDePasse(object sender, MouseEventArgs e)
         {
             MotDePasse.Hide();
-        }
+            UniteList.Enabled = true;
+            CrecheAffiche.Enabled = true;
 
-        private void jour_ValueChanged(object sender, EventArgs e)
+        }
+        private void DateDeNaissancemodif(string nb)
         {
 
+            if (BoiteADate.Text.Count() == 2 || BoiteADate.Text.Count() == 7)
+                BoiteADate.Text += " / " + nb;    
+            else if (BoiteADate.Text.Count() < 14)
+                BoiteADate.Text += nb;
+            DateDeNaissanceValue.Add(nb);
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void b1_Click(object sender, EventArgs e)
         {
             DateDeNaissancemodif("1");
@@ -305,8 +257,8 @@ namespace CRECHEPROJET
 
         private void TDB_Click(object sender, EventArgs e)
         {
+            //Génération du tableau de bord
             TableauDeBord tableauDeBord = new TableauDeBord(UniteList,creche,ladb);
-            //this.Enabled = false;
             tableauDeBord.Show();
         }
 

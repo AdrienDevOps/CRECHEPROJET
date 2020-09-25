@@ -7,9 +7,8 @@ namespace TestCreche
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void DateDeNaissance_trop_cour()
         {
-
         }
     }
 }
