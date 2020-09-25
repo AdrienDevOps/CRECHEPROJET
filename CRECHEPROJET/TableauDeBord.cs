@@ -16,7 +16,6 @@ namespace CRECHEPROJET
         private TabControl tab;
         private creche creche1;
         public mydbEntities mydb;
-        private double totalprevu,totalreel ;
 
         public TableauDeBord(TabControl tab , creche creche,mydbEntities d)
         {
@@ -29,7 +28,6 @@ namespace CRECHEPROJET
 
         private void Chargement(object sender, EventArgs e)
         {
-            mydbEntities mydb = new mydbEntities();
             int nb = 0;
             foreach (unite unite in creche1.unite)
             {
@@ -145,7 +143,7 @@ namespace CRECHEPROJET
                 UniteListe.TabPages[nb].Controls.Add(labeltotalprevu);
                 labeltotalprevu.Location = new Point(30, 300);
                 labeltotalprevu.Width = 200;
-                labeltotalprevu.Text = "Total d'heure prévue ce mois :" + totalprevu.ToString();
+                labeltotalprevu.Text = "Total d'heure prévue ce mois : 0";
 
                 Label labeltotalreel = new Label();
                 labeltotalreel.Name = "labeltotalprevu" + nb.ToString();
@@ -153,38 +151,44 @@ namespace CRECHEPROJET
                 labeltotalreel.Location = new Point(280, 300);
                 labeltotalreel.Width = 200;
                 labeltotalreel.Text = "Total d'heure effectuées ce mois : 0 ";
-                int nbr = 0;
 
+                bool nbR = false, nbP = false;
+                double totalprevu = 0, totalreel = 0;
                 foreach (acceuil acceuil in mydb.acceuil)
                 {
-                    
-                    if (acceuil.PrevuArriver.Value.Month==DateTime.Now.Month)
+                    if (acceuil.PrevuArriver.Value.Month==DateTime.Now.Month && acceuil.contrat.unite == unite)
                     {
-                        TimeSpan tempsReel;
-                        TimeSpan tempsprevu = (DateTime)acceuil.PrevuDepart - (DateTime)acceuil.PrevuArriver;
-                        if ((DateTime)acceuil.ReelDepart != null && (DateTime)acceuil.ReelArriver != null)
+                        if (acceuil.ReelDepart != null && acceuil.ReelArriver != null)
                         {
-                            tempsReel = (DateTime)acceuil.ReelArriver - (DateTime)acceuil.ReelArriver;
+                            TimeSpan tempsReel = (DateTime)acceuil.ReelArriver - (DateTime)acceuil.ReelDepart;
                             totalreel += Convert.ToInt32(tempsReel.TotalHours);
                             if (tempsReel.Minutes > 0 && tempsReel.Minutes <= 30)
                                 totalreel += 0.5;
                             else if (tempsReel.Minutes > 30 && tempsReel.Minutes <= 59)
                                 totalreel += 0.5;
-                            nbr = 1;
+                            nbR = true;
                         }
-                        totalprevu += Convert.ToInt32(tempsprevu.TotalHours);
-                        
-                        if (tempsprevu.Minutes > 0 && tempsprevu.Minutes <= 30)
-                            totalprevu += 0.5;
-                        else if (tempsprevu.Minutes > 30 && tempsprevu.Minutes <= 59)
-                            totalprevu += 1;
+                        if (acceuil.PrevuDepart != null && acceuil.PrevuArriver != null)
+                        {
+                            TimeSpan tempsprevu = (DateTime)acceuil.PrevuDepart - (DateTime)acceuil.PrevuArriver;
+                            totalprevu += Convert.ToInt32(tempsprevu.TotalHours);
+                            if (tempsprevu.Minutes > 0 && tempsprevu.Minutes <= 30)
+                                totalprevu += 0.5;
+                            else if (tempsprevu.Minutes > 30 && tempsprevu.Minutes <= 59)
+                                totalprevu += 1;
+                            nbP = true;
+                        }
         
                     }
                     
                 }
-                if (nbr == 1)
+                if (nbR)
                     labeltotalreel.Text = "Total d'heure effectuées ce mois : " + totalreel.ToString();
+                if (nbP)
+                    labeltotalprevu.Text = "Total d'heure prévue ce mois :" + totalprevu.ToString();
                 nb += 1;
+
+                
             }//unite fermeture
 
             

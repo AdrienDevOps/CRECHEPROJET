@@ -207,7 +207,6 @@ namespace CRECHEPROJET
                 {
                     if (verif == 1)
                     {
-                        acceuil.ReelArriver = DateTime.Now;
                         acceuil.ReelDepart = DateTime.Now;
                     }
                     if (verif==2)
