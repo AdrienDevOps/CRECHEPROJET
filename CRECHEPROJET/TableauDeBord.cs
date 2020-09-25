@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -137,57 +138,55 @@ namespace CRECHEPROJET
                 labelRetard.Text   = "En Retard: " + EnfantsRetard.Items.Count;
 
 
-
+                //Construteur Label pour le total Prevu par unité
                 Label labeltotalprevu = new Label();
                 labeltotalprevu.Name = "labeltotalprevu" + nb.ToString();
                 UniteListe.TabPages[nb].Controls.Add(labeltotalprevu);
                 labeltotalprevu.Location = new Point(30, 200);
                 labeltotalprevu.Width = 200;
-                labeltotalprevu.Text = "Total d'heure prévue ce mois : 0";
+                //labeltotalprevu.Text = "Total d'heure prévue ce mois : 0";
 
+                //Construteur Label pour le total Effectues par unité
                 Label labeltotalreel = new Label();
                 labeltotalreel.Name = "labeltotalprevu" + nb.ToString();
                 UniteListe.TabPages[nb].Controls.Add(labeltotalreel);
                 labeltotalreel.Location = new Point(280, 200);
                 labeltotalreel.Width = 200;
-                labeltotalreel.Text = "Total d'heure effectuées ce mois : 0 ";
+                //labeltotalreel.Text = "Total d'heure effectuées ce mois : 0 ";
 
-                bool nbR = false, nbP = false;
+                //Calcul des totaux Prévu et Effectues
                 double totalprevu = 0, totalreel = 0;
                 foreach (acceuil acceuil in mydb.acceuil)
                 {
                     if (acceuil.PrevuArriver.Value.Month==DateTime.Now.Month && acceuil.contrat.unite == unite)
                     {
                         if (acceuil.ReelDepart != null && acceuil.ReelArriver != null)
-                        {
+                        {   //calcul total Effectues
                             TimeSpan tempsReel = (DateTime)acceuil.ReelDepart - (DateTime)acceuil.ReelArriver;
                             totalreel += Convert.ToInt32(tempsReel.TotalHours);
                             if (tempsReel.Minutes > 0 && tempsReel.Minutes <= 30)
                                 totalreel += 0.5;
                             else if (tempsReel.Minutes > 30 && tempsReel.Minutes <= 59)
                                 totalreel += 1;
-                            nbR = true;
                         }
                         if (acceuil.PrevuDepart != null && acceuil.PrevuArriver != null)
-                        {
+                        {   //Calcul total Prévu
                             TimeSpan tempsprevu = (DateTime)acceuil.PrevuDepart - (DateTime)acceuil.PrevuArriver;
                             totalprevu += Convert.ToInt32(tempsprevu.TotalHours);
                             if (tempsprevu.Minutes > 0 && tempsprevu.Minutes <= 30)
                                 totalprevu += 0.5;
                             else if (tempsprevu.Minutes > 30 && tempsprevu.Minutes <= 59)
                                 totalprevu += 1;
-                            nbP = true;
                         }    
                     }               
                 }
-                if (nbR)
+                //Affichage Total Prévu et Effectues
                     labeltotalreel.Text = "Total d'heure effectuées ce mois : " + totalreel.ToString();
-                if (nbP)
                     labeltotalprevu.Text = "Total d'heure prévue ce mois :" + totalprevu.ToString();
-                nb += 1;
+                nb += 1;            
+            }
 
-                
-            }//unite fermeture
+            //Création ListBox avec Totals des Enfants par ordre Alphabétique
             foreach (enfant enfant in mydb.enfant)
                 EnfantsTotal.Items.Add(enfant.NomEnfant + " " + enfant.PrenomEnfant);
             EnfantsTotal.Sorted = true;
@@ -196,31 +195,28 @@ namespace CRECHEPROJET
         private void EnfantDetail_Click(object sender, EventArgs e)
         {
             double TotalR=0, TotalP=0;
-            bool nbR = false, nbP = false;
             foreach (acceuil acceuil in mydb.acceuil)
             {
                 string gosse = acceuil.contrat.enfant.NomEnfant + " " + acceuil.contrat.enfant.PrenomEnfant;
                 if (acceuil.PrevuArriver.Value.Month == DateTime.Now.Month && gosse ==EnfantsTotal.SelectedItem.ToString())
                 {
                     if (acceuil.ReelDepart != null && acceuil.ReelArriver != null)
-                    {
+                    {   //calcul total Effectues De l'enfant
                         TimeSpan tempsReel = (DateTime)acceuil.ReelDepart - (DateTime)acceuil.ReelArriver;
                         TotalR += Convert.ToInt32(tempsReel.TotalHours);
                         if (tempsReel.Minutes > 0 && tempsReel.Minutes <= 30)
                             TotalR += 0.5;
                         else if (tempsReel.Minutes > 30 && tempsReel.Minutes <= 59)
                             TotalR += 1;
-                        nbR = true;
                     }
                     if (acceuil.PrevuDepart != null && acceuil.PrevuArriver != null)
-                    {
-                       TimeSpan tempsprevu = (DateTime)acceuil.PrevuDepart - (DateTime)acceuil.PrevuArriver;
+                    {   //calcul total Prevu de l'enfant
+                        TimeSpan tempsprevu = (DateTime)acceuil.PrevuDepart - (DateTime)acceuil.PrevuArriver;
                         TotalP += Convert.ToInt32(tempsprevu.TotalHours);
                        if (tempsprevu.Minutes > 0 && tempsprevu.Minutes <= 30)
                             TotalP += 0.5;
                        else if (tempsprevu.Minutes > 30 && tempsprevu.Minutes <= 59)
                             TotalP += 1;
-                       nbP = true;
                 }
             }
                 texteeffectuees.Text = TotalR.ToString();
@@ -231,7 +227,7 @@ namespace CRECHEPROJET
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
-            
+          
         }
     }
 }
