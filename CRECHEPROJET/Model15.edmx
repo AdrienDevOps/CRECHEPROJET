@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="mydbModel15.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="acceuil">
+          <Key>
+            <PropertyRef Name="IDacceuil" />
+          </Key>
+          <Property Name="IDacceuil" Type="int" Nullable="false" />
+          <Property Name="PrevuArriver" Type="datetime" Precision="0" />
+          <Property Name="PrevuDepart" Type="datetime" Precision="0" />
+          <Property Name="ReelArriver" Type="datetime" Precision="0" />
+          <Property Name="ReelDepart" Type="datetime" Precision="0" />
+          <Property Name="Contrat_IDContrat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="contrat">
+          <Key>
+            <PropertyRef Name="IDContrat" />
+          </Key>
+          <Property Name="IDContrat" Type="int" Nullable="false" />
+          <Property Name="Date Signature" Type="datetime" Precision="0" />
+          <Property Name="DateDebut" Type="datetime" Precision="0" />
+          <Property Name="DateFin" Type="datetime" Precision="0" />
+          <Property Name="IDUnite" Type="int" Nullable="false" />
+          <Property Name="IDenfant" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="creche">
+          <Key>
+            <PropertyRef Name="IDCreche" />
+          </Key>
+          <Property Name="IDCreche" Type="int" Nullable="false" />
+          <Property Name="NomCreche" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="enfant">
+          <Key>
+            <PropertyRef Name="IDenfant" />
+          </Key>
+          <Property Name="IDenfant" Type="int" Nullable="false" />
+          <Property Name="NomEnfant" Type="varchar" MaxLength="45" />
+          <Property Name="PrenomEnfant" Type="varchar" MaxLength="45" />
+          <Property Name="Datedenaissance" Type="datetime" Precision="0" />
+          <Property Name="Ville" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="unite">
+          <Key>
+            <PropertyRef Name="IDUnite" />
+          </Key>
+          <Property Name="IDUnite" Type="int" Nullable="false" />
+          <Property Name="NomUnite" Type="varchar" MaxLength="45" />
+          <Property Name="CRECHE_IDCreche" Type="int" Nullable="false" />
+          <Property Name="AlphaUnite" Type="int" Nullable="false" />
+          <Property Name="RougeUnite" Type="int" Nullable="false" />
+          <Property Name="VertUnite" Type="int" Nullable="false" />
+          <Property Name="Bleu Unite" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_Acceuil_Contrat1">
+          <End Role="contrat" Type="Self.contrat" Multiplicity="1" />
+          <End Role="acceuil" Type="Self.acceuil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contrat">
+              <PropertyRef Name="IDContrat" />
+            </Principal>
+            <Dependent Role="acceuil">
+              <PropertyRef Name="Contrat_IDContrat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Contrat_enfant1">
+          <End Role="enfant" Type="Self.enfant" Multiplicity="1" />
+          <End Role="contrat" Type="Self.contrat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="enfant">
+              <PropertyRef Name="IDenfant" />
+            </Principal>
+            <Dependent Role="contrat">
+              <PropertyRef Name="IDenfant" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Contrat_UNITE1">
+          <End Role="unite" Type="Self.unite" Multiplicity="1" />
+          <End Role="contrat" Type="Self.contrat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unite">
+              <PropertyRef Name="IDUnite" />
+            </Principal>
+            <Dependent Role="contrat">
+              <PropertyRef Name="IDUnite" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UNITE_CRECHE">
+          <End Role="creche" Type="Self.creche" Multiplicity="1" />
+          <End Role="unite" Type="Self.unite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="creche">
+              <PropertyRef Name="IDCreche" />
+            </Principal>
+            <Dependent Role="unite">
+              <PropertyRef Name="CRECHE_IDCreche" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mydbModel15StoreContainer">
+          <EntitySet Name="acceuil" EntityType="Self.acceuil" Schema="mydb" store:Type="Tables" />
+          <EntitySet Name="contrat" EntityType="Self.contrat" Schema="mydb" store:Type="Tables" />
+          <EntitySet Name="creche" EntityType="Self.creche" Schema="mydb" store:Type="Tables" />
+          <EntitySet Name="enfant" EntityType="Self.enfant" Schema="mydb" store:Type="Tables" />
+          <EntitySet Name="unite" EntityType="Self.unite" Schema="mydb" store:Type="Tables" />
+          <AssociationSet Name="fk_Acceuil_Contrat1" Association="Self.fk_Acceuil_Contrat1">
+            <End Role="contrat" EntitySet="contrat" />
+            <End Role="acceuil" EntitySet="acceuil" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Contrat_enfant1" Association="Self.fk_Contrat_enfant1">
+            <End Role="enfant" EntitySet="enfant" />
+            <End Role="contrat" EntitySet="contrat" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Contrat_UNITE1" Association="Self.fk_Contrat_UNITE1">
+            <End Role="unite" EntitySet="unite" />
+            <End Role="contrat" EntitySet="contrat" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UNITE_CRECHE" Association="Self.fk_UNITE_CRECHE">
+            <End Role="creche" EntitySet="creche" />
+            <End Role="unite" EntitySet="unite" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mydbModel15" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="acceuil">
+          <Key>
+            <PropertyRef Name="IDacceuil" />
+          </Key>
+          <Property Name="IDacceuil" Type="Int32" Nullable="false" />
+          <Property Name="PrevuArriver" Type="DateTime" />
+          <Property Name="PrevuDepart" Type="DateTime" />
+          <Property Name="ReelArriver" Type="DateTime" />
+          <Property Name="ReelDepart" Type="DateTime" />
+          <Property Name="Contrat_IDContrat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="contrat" Relationship="Self.fk_Acceuil_Contrat1" FromRole="acceuil" ToRole="contrat" />
+        </EntityType>
+        <EntityType Name="contrat">
+          <Key>
+            <PropertyRef Name="IDContrat" />
+          </Key>
+          <Property Name="IDContrat" Type="Int32" Nullable="false" />
+          <Property Name="Date_Signature" Type="DateTime" />
+          <Property Name="DateDebut" Type="DateTime" />
+          <Property Name="DateFin" Type="DateTime" />
+          <Property Name="IDUnite" Type="Int32" Nullable="false" />
+          <Property Name="IDenfant" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="acceuil" Relationship="Self.fk_Acceuil_Contrat1" FromRole="contrat" ToRole="acceuil" />
+          <NavigationProperty Name="enfant" Relationship="Self.fk_Contrat_enfant1" FromRole="contrat" ToRole="enfant" />
+          <NavigationProperty Name="unite" Relationship="Self.fk_Contrat_UNITE1" FromRole="contrat" ToRole="unite" />
+        </EntityType>
+        <EntityType Name="creche">
+          <Key>
+            <PropertyRef Name="IDCreche" />
+          </Key>
+          <Property Name="IDCreche" Type="Int32" Nullable="false" />
+          <Property Name="NomCreche" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="unite" Relationship="Self.fk_UNITE_CRECHE" FromRole="creche" ToRole="unite" />
+        </EntityType>
+        <EntityType Name="enfant">
+          <Key>
+            <PropertyRef Name="IDenfant" />
+          </Key>
+          <Property Name="IDenfant" Type="Int32" Nullable="false" />
+          <Property Name="NomEnfant" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PrenomEnfant" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Datedenaissance" Type="DateTime" />
+          <Property Name="Ville" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="contrat" Relationship="Self.fk_Contrat_enfant1" FromRole="enfant" ToRole="contrat" />
+        </EntityType>
+        <EntityType Name="unite">
+          <Key>
+            <PropertyRef Name="IDUnite" />
+          </Key>
+          <Property Name="IDUnite" Type="Int32" Nullable="false" />
+          <Property Name="NomUnite" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="CRECHE_IDCreche" Type="Int32" Nullable="false" />
+          <Property Name="AlphaUnite" Type="Int32" Nullable="false" />
+          <Property Name="RougeUnite" Type="Int32" Nullable="false" />
+          <Property Name="VertUnite" Type="Int32" Nullable="false" />
+          <Property Name="Bleu_Unite" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="contrat" Relationship="Self.fk_Contrat_UNITE1" FromRole="unite" ToRole="contrat" />
+          <NavigationProperty Name="creche" Relationship="Self.fk_UNITE_CRECHE" FromRole="unite" ToRole="creche" />
+        </EntityType>
+        <Association Name="fk_Acceuil_Contrat1">
+          <End Role="contrat" Type="Self.contrat" Multiplicity="1" />
+          <End Role="acceuil" Type="Self.acceuil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contrat">
+              <PropertyRef Name="IDContrat" />
+            </Principal>
+            <Dependent Role="acceuil">
+              <PropertyRef Name="Contrat_IDContrat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Contrat_enfant1">
+          <End Role="enfant" Type="Self.enfant" Multiplicity="1" />
+          <End Role="contrat" Type="Self.contrat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="enfant">
+              <PropertyRef Name="IDenfant" />
+            </Principal>
+            <Dependent Role="contrat">
+              <PropertyRef Name="IDenfant" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Contrat_UNITE1">
+          <End Role="unite" Type="Self.unite" Multiplicity="1" />
+          <End Role="contrat" Type="Self.contrat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unite">
+              <PropertyRef Name="IDUnite" />
+            </Principal>
+            <Dependent Role="contrat">
+              <PropertyRef Name="IDUnite" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UNITE_CRECHE">
+          <End Role="creche" Type="Self.creche" Multiplicity="1" />
+          <End Role="unite" Type="Self.unite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="creche">
+              <PropertyRef Name="IDCreche" />
+            </Principal>
+            <Dependent Role="unite">
+              <PropertyRef Name="CRECHE_IDCreche" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mydbEntities15" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="acceuil" EntityType="Self.acceuil" />
+          <EntitySet Name="contrat" EntityType="Self.contrat" />
+          <EntitySet Name="creche" EntityType="Self.creche" />
+          <EntitySet Name="enfant" EntityType="Self.enfant" />
+          <EntitySet Name="unite" EntityType="Self.unite" />
+          <AssociationSet Name="fk_Acceuil_Contrat1" Association="Self.fk_Acceuil_Contrat1">
+            <End Role="contrat" EntitySet="contrat" />
+            <End Role="acceuil" EntitySet="acceuil" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Contrat_enfant1" Association="Self.fk_Contrat_enfant1">
+            <End Role="enfant" EntitySet="enfant" />
+            <End Role="contrat" EntitySet="contrat" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Contrat_UNITE1" Association="Self.fk_Contrat_UNITE1">
+            <End Role="unite" EntitySet="unite" />
+            <End Role="contrat" EntitySet="contrat" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UNITE_CRECHE" Association="Self.fk_UNITE_CRECHE">
+            <End Role="creche" EntitySet="creche" />
+            <End Role="unite" EntitySet="unite" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mydbModel15StoreContainer" CdmEntityContainer="mydbEntities15">
+          <EntitySetMapping Name="acceuil">
+            <EntityTypeMapping TypeName="mydbModel15.acceuil">
+              <MappingFragment StoreEntitySet="acceuil">
+                <ScalarProperty Name="IDacceuil" ColumnName="IDacceuil" />
+                <ScalarProperty Name="PrevuArriver" ColumnName="PrevuArriver" />
+                <ScalarProperty Name="PrevuDepart" ColumnName="PrevuDepart" />
+                <ScalarProperty Name="ReelArriver" ColumnName="ReelArriver" />
+                <ScalarProperty Name="ReelDepart" ColumnName="ReelDepart" />
+                <ScalarProperty Name="Contrat_IDContrat" ColumnName="Contrat_IDContrat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="contrat">
+            <EntityTypeMapping TypeName="mydbModel15.contrat">
+              <MappingFragment StoreEntitySet="contrat">
+                <ScalarProperty Name="IDContrat" ColumnName="IDContrat" />
+                <ScalarProperty Name="Date_Signature" ColumnName="Date Signature" />
+                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+                <ScalarProperty Name="IDUnite" ColumnName="IDUnite" />
+                <ScalarProperty Name="IDenfant" ColumnName="IDenfant" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="creche">
+            <EntityTypeMapping TypeName="mydbModel15.creche">
+              <MappingFragment StoreEntitySet="creche">
+                <ScalarProperty Name="IDCreche" ColumnName="IDCreche" />
+                <ScalarProperty Name="NomCreche" ColumnName="NomCreche" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="enfant">
+            <EntityTypeMapping TypeName="mydbModel15.enfant">
+              <MappingFragment StoreEntitySet="enfant">
+                <ScalarProperty Name="IDenfant" ColumnName="IDenfant" />
+                <ScalarProperty Name="NomEnfant" ColumnName="NomEnfant" />
+                <ScalarProperty Name="PrenomEnfant" ColumnName="PrenomEnfant" />
+                <ScalarProperty Name="Datedenaissance" ColumnName="Datedenaissance" />
+                <ScalarProperty Name="Ville" ColumnName="Ville" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="unite">
+            <EntityTypeMapping TypeName="mydbModel15.unite">
+              <MappingFragment StoreEntitySet="unite">
+                <ScalarProperty Name="IDUnite" ColumnName="IDUnite" />
+                <ScalarProperty Name="NomUnite" ColumnName="NomUnite" />
+                <ScalarProperty Name="CRECHE_IDCreche" ColumnName="CRECHE_IDCreche" />
+                <ScalarProperty Name="AlphaUnite" ColumnName="AlphaUnite" />
+                <ScalarProperty Name="RougeUnite" ColumnName="RougeUnite" />
+                <ScalarProperty Name="VertUnite" ColumnName="VertUnite" />
+                <ScalarProperty Name="Bleu_Unite" ColumnName="Bleu Unite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
