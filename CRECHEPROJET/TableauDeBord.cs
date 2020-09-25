@@ -141,14 +141,14 @@ namespace CRECHEPROJET
                 Label labeltotalprevu = new Label();
                 labeltotalprevu.Name = "labeltotalprevu" + nb.ToString();
                 UniteListe.TabPages[nb].Controls.Add(labeltotalprevu);
-                labeltotalprevu.Location = new Point(30, 300);
+                labeltotalprevu.Location = new Point(30, 200);
                 labeltotalprevu.Width = 200;
                 labeltotalprevu.Text = "Total d'heure prévue ce mois : 0";
 
                 Label labeltotalreel = new Label();
                 labeltotalreel.Name = "labeltotalprevu" + nb.ToString();
                 UniteListe.TabPages[nb].Controls.Add(labeltotalreel);
-                labeltotalreel.Location = new Point(280, 300);
+                labeltotalreel.Location = new Point(280, 200);
                 labeltotalreel.Width = 200;
                 labeltotalreel.Text = "Total d'heure effectuées ce mois : 0 ";
 
@@ -160,12 +160,12 @@ namespace CRECHEPROJET
                     {
                         if (acceuil.ReelDepart != null && acceuil.ReelArriver != null)
                         {
-                            TimeSpan tempsReel = (DateTime)acceuil.ReelArriver - (DateTime)acceuil.ReelDepart;
+                            TimeSpan tempsReel = (DateTime)acceuil.ReelDepart - (DateTime)acceuil.ReelArriver;
                             totalreel += Convert.ToInt32(tempsReel.TotalHours);
                             if (tempsReel.Minutes > 0 && tempsReel.Minutes <= 30)
                                 totalreel += 0.5;
                             else if (tempsReel.Minutes > 30 && tempsReel.Minutes <= 59)
-                                totalreel += 0.5;
+                                totalreel += 1;
                             nbR = true;
                         }
                         if (acceuil.PrevuDepart != null && acceuil.PrevuArriver != null)

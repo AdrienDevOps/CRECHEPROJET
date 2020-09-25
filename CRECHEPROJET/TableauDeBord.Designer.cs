@@ -36,7 +36,7 @@
             this.UniteListe.Location = new System.Drawing.Point(12, 67);
             this.UniteListe.Name = "UniteListe";
             this.UniteListe.SelectedIndex = 0;
-            this.UniteListe.Size = new System.Drawing.Size(957, 371);
+            this.UniteListe.Size = new System.Drawing.Size(957, 247);
             this.UniteListe.TabIndex = 0;
             // 
             // TableauDeBord
