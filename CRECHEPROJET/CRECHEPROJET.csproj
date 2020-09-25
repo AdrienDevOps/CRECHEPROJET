@@ -126,7 +126,6 @@
     <Compile Include="Gestioncontrat.cs" />
     <Compile Include="GestionCreche.cs" />
     <Compile Include="GestionUnite.cs" />
-    <Compile Include="Gestion_Listbox.cs" />
     <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

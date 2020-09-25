@@ -177,10 +177,8 @@ namespace CRECHEPROJET
                             else if (tempsprevu.Minutes > 30 && tempsprevu.Minutes <= 59)
                                 totalprevu += 1;
                             nbP = true;
-                        }
-        
-                    }
-                    
+                        }    
+                    }               
                 }
                 if (nbR)
                     labeltotalreel.Text = "Total d'heure effectuées ce mois : " + totalreel.ToString();
@@ -190,9 +188,44 @@ namespace CRECHEPROJET
 
                 
             }//unite fermeture
+            foreach (enfant enfant in mydb.enfant)
+                EnfantsTotal.Items.Add(enfant.NomEnfant + " " + enfant.PrenomEnfant);
+            EnfantsTotal.Sorted = true;
+        }
 
-            
-
+        private void EnfantDetail_Click(object sender, EventArgs e)
+        {
+            double TotalR=0, TotalP=0;
+            bool nbR = false, nbP = false;
+            foreach (acceuil acceuil in mydb.acceuil)
+            {
+                string gosse = acceuil.contrat.enfant.NomEnfant + " " + acceuil.contrat.enfant.PrenomEnfant;
+                if (acceuil.PrevuArriver.Value.Month == DateTime.Now.Month && gosse ==EnfantsTotal.SelectedItem.ToString())
+                {
+                    if (acceuil.ReelDepart != null && acceuil.ReelArriver != null)
+                    {
+                        TimeSpan tempsReel = (DateTime)acceuil.ReelDepart - (DateTime)acceuil.ReelArriver;
+                        TotalR += Convert.ToInt32(tempsReel.TotalHours);
+                        if (tempsReel.Minutes > 0 && tempsReel.Minutes <= 30)
+                            TotalR += 0.5;
+                        else if (tempsReel.Minutes > 30 && tempsReel.Minutes <= 59)
+                            TotalR += 1;
+                        nbR = true;
+                    }
+                    if (acceuil.PrevuDepart != null && acceuil.PrevuArriver != null)
+                    {
+                       TimeSpan tempsprevu = (DateTime)acceuil.PrevuDepart - (DateTime)acceuil.PrevuArriver;
+                        TotalP += Convert.ToInt32(tempsprevu.TotalHours);
+                       if (tempsprevu.Minutes > 0 && tempsprevu.Minutes <= 30)
+                            TotalP += 0.5;
+                       else if (tempsprevu.Minutes > 30 && tempsprevu.Minutes <= 59)
+                            TotalP += 1;
+                       nbP = true;
+                }
+            }
+                texteeffectuees.Text = TotalR.ToString();
+                Texteprevue.Text = TotalP.ToString();
+            }
         }
     }
 }
