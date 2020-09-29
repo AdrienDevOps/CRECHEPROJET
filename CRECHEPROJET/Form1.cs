@@ -18,23 +18,17 @@ namespace CRECHEPROJET
   
         private int nbcreche=1;
         private creche creche;
-        public List<contrat> contrats = new List<contrat>() ;
         public List<Control> ButtonEnfants = new List<Control>();
         public Control ButtonEnfant;
         private List<string> DateDeNaissanceValue= new List<string>();
         private int H=0, L=0;
-        public mydbEntities ladb;
-        
+        public mydbEntities Bdd;
         public Button boutonchoisie;
   
-
-
-
         public Form1()
         {
             InitializeComponent();
-            ladb = new mydbEntities();
-
+            Bdd = new mydbEntities();
         }
        
         private void ChangeCreche()
@@ -42,44 +36,36 @@ namespace CRECHEPROJET
             //Affichage et Mise à jour  des Unités de la crèche, de la couleur arrière plan)
             CrecheAffiche.Text = creche.ToString();
             UniteList.TabPages.Clear();
-            contrats.Clear();
-            int nb = 0;
+            int UniteNumero = 0;
             H = 0;
             L = 0;
-
             foreach (unite unite in creche.unite.ToList())
             {
                 UniteList.TabPages.Add(unite.ToString());
-                UniteList.TabPages[nb].BackColor = unite.GetColor();
+                UniteList.TabPages[UniteNumero].BackColor = unite.GetColor();
                 //je selectionne les contrats de l'unité
-                foreach (contrat contrat in ladb.contrat.ToList())
+                foreach (contrat contrat in Bdd.contrat.ToList())
                 {                    
                     if(contrat.IDUnite== unite.IDUnite)
                     {
-                        contrats.Add(contrat);
                         var acceuilsAttendus = from acceuil in contrat.acceuil
                                                where acceuil.PrevuArriver.Value.Date == DateTime.Now.Date
                                                select acceuil;
                         foreach (acceuil acceuil in acceuilsAttendus.ToList())
                         {
-                            string nom = "boutton" + acceuil.IDacceuil;
-                            CreateButton(nom, acceuil.contrat.enfant.NomEnfant + "   " + acceuil.contrat.enfant.PrenomEnfant + "\n" + "\n" + "\n" + acceuil.PrevuArriver.Value.ToShortTimeString() + "          " + "00:00" + "\n" + acceuil.PrevuDepart.Value.ToShortTimeString() + "          " + "00:00", acceuil);
+                            CreateButton(acceuil);
                         }
                     }
                 }
                 // je selectionne les contrats à l'ordre du jour
-               
-                nb += 1;
-            }       
-
+                UniteNumero += 1;
+            }     
         }
-        private void CreateButton(string ButtonName, string ButtonText,acceuil acceuil)
+        private void CreateButton(acceuil acceuil)
         {
             ButtonEnfant = new Button();
-            ButtonEnfant.Name = "ButtonName";
-            ButtonEnfant.Text = ButtonText;
-            ButtonEnfant.Visible = true;
-            ButtonEnfant.BackColor = Color.Gray;
+            ButtonEnfant.BackColor = acceuil.GetColorBoutton();
+            ButtonEnfant.Text = acceuil.GetTextBoutton();
             ButtonEnfant.Width = 150;
             ButtonEnfant.Height = 85;
             ButtonEnfant.Location = new Point(H , L );
@@ -113,7 +99,7 @@ namespace CRECHEPROJET
         {
             //Initialisation
             temps.Text = DateTime.Now.ToShortTimeString();
-            creche = ladb.creche.Distinct().First();
+            creche = Bdd.creche.Distinct().First();
             ChangeCreche();
         }
         //Timeur qui actualise l'horloge
@@ -126,11 +112,9 @@ namespace CRECHEPROJET
         {
             acceuil test = (acceuil)(boutonchoisie.Tag);
             int verif = 0;
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             while (DateDeNaissanceValue.Count < 8)
                 DateDeNaissanceValue.Add("o");
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            foreach (enfant gosse in ladb.enfant.ToList())
+            foreach (enfant gosse in Bdd.enfant.ToList())
             {
                 if (gosse.IDenfant == test.contrat.enfant.IDenfant)
                 { 
@@ -158,6 +142,7 @@ namespace CRECHEPROJET
                         MotDePasse.Hide();
                         UniteList.Enabled = true;
                         CrecheAffiche.Enabled = true;
+                        
                     }
                     else
                         MessageBox.Show("Mauvaise Date De naissance");
@@ -165,7 +150,7 @@ namespace CRECHEPROJET
                     DateDeNaissanceValue.Clear();
                 }
             }
-            foreach (acceuil acceuil in ladb.acceuil.ToList())
+            foreach (acceuil acceuil in Bdd.acceuil.ToList())
             {
                 if (acceuil.IDacceuil == test.IDacceuil)
                 {
@@ -173,7 +158,7 @@ namespace CRECHEPROJET
                         acceuil.ReelDepart = DateTime.Now;
                     if (verif==2)
                         acceuil.ReelArriver = DateTime.Now;
-                    ladb.SaveChanges();
+                    Bdd.SaveChanges();
                 }
             }
         }
@@ -258,16 +243,16 @@ namespace CRECHEPROJET
         private void TDB_Click(object sender, EventArgs e)
         {
             //Génération du tableau de bord
-            TableauDeBord tableauDeBord = new TableauDeBord(UniteList,creche,ladb);
+            TableauDeBord tableauDeBord = new TableauDeBord(UniteList,creche,Bdd);
             tableauDeBord.Show();
         }
 
         private void CrecheAffiche_Click(object sender, EventArgs e)
         {
            //Chaque fois que je change de Crèche
-           creche = ladb.creche.Find(nbcreche);
+           creche = Bdd.creche.Find(nbcreche);
            ChangeCreche();
-           if (nbcreche >= ladb.creche.Count())
+           if (nbcreche >= Bdd.creche.Count())
                nbcreche = 1;
            else
            nbcreche += 1;
