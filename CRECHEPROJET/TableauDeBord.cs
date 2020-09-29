@@ -96,7 +96,7 @@ namespace CRECHEPROJET
                 EnfantsRetard.Location = new Point(670, 30);
 
                 Label labelRetard = new Label();
-                labelRetard.Name = "labelAvance" + nb.ToString();
+                labelRetard.Name = "labelRetard" + nb.ToString();
                 UniteListe.TabPages[nb].Controls.Add(labelRetard);
                 labelRetard.Location = new Point(680, 10);
 
