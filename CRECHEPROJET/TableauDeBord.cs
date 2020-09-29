@@ -144,7 +144,6 @@ namespace CRECHEPROJET
                 UniteListe.TabPages[nb].Controls.Add(labeltotalprevu);
                 labeltotalprevu.Location = new Point(30, 200);
                 labeltotalprevu.Width = 200;
-                //labeltotalprevu.Text = "Total d'heure prévue ce mois : 0";
 
                 //Construteur Label pour le total Effectues par unité
                 Label labeltotalreel = new Label();
@@ -152,7 +151,7 @@ namespace CRECHEPROJET
                 UniteListe.TabPages[nb].Controls.Add(labeltotalreel);
                 labeltotalreel.Location = new Point(280, 200);
                 labeltotalreel.Width = 200;
-                //labeltotalreel.Text = "Total d'heure effectuées ce mois : 0 ";
+                
 
                 //Calcul des totaux Prévu et Effectues
                 double totalprevu = 0, totalreel = 0;

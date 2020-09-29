@@ -10,7 +10,9 @@ namespace TestCreche
         [TestMethod]
         public void DateDeNaissance_trop_cour()
         {
-           
+            Form1 testform1 = new Form1();
+            testform1.
+
         }
     }
 }
