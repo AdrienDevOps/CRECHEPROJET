@@ -305,7 +305,6 @@
             this.FermerMotDePasse.TabIndex = 6;
             this.FermerMotDePasse.Text = "Fermer";
             this.FermerMotDePasse.UseVisualStyleBackColor = false;
-            this.FermerMotDePasse.Click += new System.EventHandler(this.FermerMotDePasse_Click);
             this.FermerMotDePasse.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FermeMotDePasse);
             // 
             // TDB

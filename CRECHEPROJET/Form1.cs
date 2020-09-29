@@ -15,7 +15,6 @@ namespace CRECHEPROJET
 {
     public partial class Form1 : Form
     {
-  
         private int nbcreche=1;
         private creche creche;
         public List<Control> ButtonEnfants = new List<Control>();
@@ -24,16 +23,10 @@ namespace CRECHEPROJET
         private int H=0, L=0;
         public mydbEntities Bdd;
         public Button boutonchoisie;
-  
-        public Form1()
-        {
-            InitializeComponent();
-            Bdd = new mydbEntities();
-        }
+        public Form1() { InitializeComponent(); }    
        
         private void ChangeCreche()
-        {
-            //Affichage et Mise à jour  des Unités de la crèche, de la couleur arrière plan)
+        {   //Affichage et Mise à jour  des Unités de la crèche, de la couleur arrière plan)
             CrecheAffiche.Text = creche.ToString();
             UniteList.TabPages.Clear();
             int UniteNumero = 0;
@@ -43,21 +36,17 @@ namespace CRECHEPROJET
             {
                 UniteList.TabPages.Add(unite.ToString());
                 UniteList.TabPages[UniteNumero].BackColor = unite.GetColor();
-                //je selectionne les contrats de l'unité
+               
                 foreach (contrat contrat in Bdd.contrat.ToList())
-                {                    
-                    if(contrat.IDUnite== unite.IDUnite)
+                {                   
+                    if (contrat.IDUnite== unite.IDUnite)
                     {
                         var acceuilsAttendus = from acceuil in contrat.acceuil
                                                where acceuil.PrevuArriver.Value.Date == DateTime.Now.Date
                                                select acceuil;
-                        foreach (acceuil acceuil in acceuilsAttendus.ToList())
-                        {
-                            CreateButton(acceuil);
-                        }
+                        foreach (acceuil acceuil in acceuilsAttendus.ToList()) { CreateButton(acceuil); }
                     }
                 }
-                // je selectionne les contrats à l'ordre du jour
                 UniteNumero += 1;
             }     
         }
@@ -86,7 +75,6 @@ namespace CRECHEPROJET
              H += 155;          
             UniteList.SelectedTab.Controls.Add(ButtonEnfant);          
         }
-
         private void ClicK_Buttun(object sender, EventArgs e)
         {
             boutonchoisie = (Button)sender;
@@ -94,73 +82,49 @@ namespace CRECHEPROJET
             CrecheAffiche.Enabled = false;
             MotDePasse.Show();           
         }
-
         private void Form1_Load(object sender, EventArgs e)
-        {
-            //Initialisation
+        {   //Initialisation
             temps.Text = DateTime.Now.ToShortTimeString();
             creche = Bdd.creche.Distinct().First();
+            Bdd = new mydbEntities();
             ChangeCreche();
         }
-        //Timeur qui actualise l'horloge
         private void timer_Tick(object sender, EventArgs e)
-        {
+        {   //Timeur qui actualise l'horloge
             temps.Text = DateTime.Now.ToShortTimeString();
         }
-
         private void ValideMdp(object sender, EventArgs e)
         {
-            acceuil test = (acceuil)(boutonchoisie.Tag);
-            int verif = 0;
-            while (DateDeNaissanceValue.Count < 8)
-                DateDeNaissanceValue.Add("o");
-            foreach (enfant gosse in Bdd.enfant.ToList())
-            {
-                if (gosse.IDenfant == test.contrat.enfant.IDenfant)
+            acceuil Acceuil = (acceuil)(boutonchoisie.Tag);
+            while (DateDeNaissanceValue.Count < 8) DateDeNaissanceValue.Add("X");
+            foreach (enfant Enfant in Bdd.enfant.ToList())
+                if (Enfant.IDenfant == Acceuil.contrat.enfant.IDenfant)
                 { 
-                    if (DateDeNaissanceValue[0] == "0")
-                        DateDeNaissanceValue[0] = "";
-                    if (DateDeNaissanceValue[2] == "0")
-                        DateDeNaissanceValue[2] = "";
-                    if (gosse.Datedenaissance.Value.Year.ToString() == (DateDeNaissanceValue[4] + DateDeNaissanceValue[5] + DateDeNaissanceValue[6] + DateDeNaissanceValue[7]) && gosse.Datedenaissance.Value.Month.ToString() == (DateDeNaissanceValue[2] + DateDeNaissanceValue[3]) && gosse.Datedenaissance.Value.Day.ToString() == DateDeNaissanceValue[0] + DateDeNaissanceValue[1])
+                    if (DateDeNaissanceValue[0] == "0") DateDeNaissanceValue[0] = "";
+                    if (DateDeNaissanceValue[2] == "0") DateDeNaissanceValue[2] = "";
+                    if (Enfant.Datedenaissance.Value.Year.ToString() == (DateDeNaissanceValue[4] + DateDeNaissanceValue[5] + DateDeNaissanceValue[6] + DateDeNaissanceValue[7]) && Enfant.Datedenaissance.Value.Month.ToString() == (DateDeNaissanceValue[2] + DateDeNaissanceValue[3]) && Enfant.Datedenaissance.Value.Day.ToString() == DateDeNaissanceValue[0] + DateDeNaissanceValue[1])
                     {
                         MessageBox.Show("Connection Réussi !");
                         if (boutonchoisie.BackColor == Color.Green)
                         {
                             boutonchoisie.BackColor = Color.Cyan;
-                            verif = 1;
-                            test.ReelDepart = DateTime.Now;
-                            boutonchoisie.Text = test.contrat.enfant.NomEnfant + "   " + test.contrat.enfant.PrenomEnfant + "\n" + "\n" + "\n" + test.PrevuArriver.Value.ToShortTimeString() + "          " + test.ReelArriver.Value.ToShortTimeString() + "\n" + test.PrevuDepart.Value.ToShortTimeString() + "          " + test.ReelDepart.Value.ToShortTimeString();
+                            Acceuil.Updateacceuil(true, Bdd);
+                            boutonchoisie.Text = Acceuil.GetTextBoutton();
                         }
                         else if (boutonchoisie.BackColor == Color.Gray)
                         {
-                            verif = 2;
+                            Acceuil.Updateacceuil(false, Bdd);
                             boutonchoisie.BackColor = Color.Green;
-                            test.ReelArriver = DateTime.Now;
-                            boutonchoisie.Text = test.contrat.enfant.NomEnfant + "   " + test.contrat.enfant.PrenomEnfant + "\n" + "\n" + "\n" + test.PrevuArriver.Value.ToShortTimeString() + "          " + test.ReelArriver.Value.ToShortTimeString() + "\n" + test.PrevuDepart.Value.ToShortTimeString() + "          " + "00:00";
+                            boutonchoisie.Text = Acceuil.GetTextBoutton();
                         }
                         MotDePasse.Hide();
                         UniteList.Enabled = true;
-                        CrecheAffiche.Enabled = true;
-                        
+                        CrecheAffiche.Enabled = true;                   
                     }
-                    else
-                        MessageBox.Show("Mauvaise Date De naissance");
+                    else MessageBox.Show("Mauvaise Date De naissance");
                     BoiteADate.Text = "";
                     DateDeNaissanceValue.Clear();
                 }
-            }
-            foreach (acceuil acceuil in Bdd.acceuil.ToList())
-            {
-                if (acceuil.IDacceuil == test.IDacceuil)
-                {
-                    if (verif == 1)
-                        acceuil.ReelDepart = DateTime.Now;
-                    if (verif==2)
-                        acceuil.ReelArriver = DateTime.Now;
-                    Bdd.SaveChanges();
-                }
-            }
         }
 
         private void FermeMotDePasse(object sender, MouseEventArgs e)
@@ -168,85 +132,34 @@ namespace CRECHEPROJET
             MotDePasse.Hide();
             UniteList.Enabled = true;
             CrecheAffiche.Enabled = true;
-
         }
         private void DateDeNaissancemodif(string nb)
         {
-
-            if (BoiteADate.Text.Count() == 2 || BoiteADate.Text.Count() == 7)
-                BoiteADate.Text += " / " + nb;    
-            else if (BoiteADate.Text.Count() < 14)
-                BoiteADate.Text += nb;
+            if (BoiteADate.Text.Count() == 2 || BoiteADate.Text.Count() == 7) BoiteADate.Text += " / " + nb;    
+            else if (BoiteADate.Text.Count() < 14) BoiteADate.Text += nb;
             DateDeNaissanceValue.Add(nb);
         }
-        private void b1_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("1");
-        }
-
-        private void b2_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("2");
-        }
-
-        private void b3_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("3");
-        }
-
-        private void b4_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("4");
-        }
-
-        private void b5_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("5");
-        }
-
-        private void b6_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("6");
-        }
-
-        private void b7_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("7");
-        }
-
-        private void b8_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("8");
-        }
-
-        private void b9_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("9");
-        }
-
-        private void b0_Click(object sender, EventArgs e)
-        {
-            DateDeNaissancemodif("0");
-        }
-
+        private void b1_Click(object sender, EventArgs e) { DateDeNaissancemodif("1"); }
+        private void b2_Click(object sender, EventArgs e) { DateDeNaissancemodif("2"); }
+        private void b3_Click(object sender, EventArgs e) { DateDeNaissancemodif("3"); }
+        private void b4_Click(object sender, EventArgs e) { DateDeNaissancemodif("4"); }
+        private void b5_Click(object sender, EventArgs e) { DateDeNaissancemodif("5"); }
+        private void b6_Click(object sender, EventArgs e) { DateDeNaissancemodif("6"); }
+        private void b7_Click(object sender, EventArgs e) { DateDeNaissancemodif("7"); }
+        private void b8_Click(object sender, EventArgs e) { DateDeNaissancemodif("8"); }
+        private void b9_Click(object sender, EventArgs e) { DateDeNaissancemodif("9"); }
+        private void b0_Click(object sender, EventArgs e) { DateDeNaissancemodif("0"); }
         private void bsupp_Click(object sender, EventArgs e)
         {
             BoiteADate.Text = "";
             DateDeNaissanceValue.Clear();
         }
-
-        private void FermerMotDePasse_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void TDB_Click(object sender, EventArgs e)
         {
             //Génération du tableau de bord
             TableauDeBord tableauDeBord = new TableauDeBord(UniteList,creche,Bdd);
             tableauDeBord.Show();
         }
-
         private void CrecheAffiche_Click(object sender, EventArgs e)
         {
            //Chaque fois que je change de Crèche

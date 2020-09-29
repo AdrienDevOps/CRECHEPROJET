@@ -30,7 +30,18 @@ namespace CRECHEPROJET
 
             else
                 return contrat.enfant.NomEnfant + "   " + contrat.enfant.PrenomEnfant + "\n" + "\n" + "\n" + PrevuArriver.Value.ToShortTimeString() + "          " + "00:00" + "\n" + PrevuDepart.Value.ToShortTimeString() + "          " + "00:00";
-
+        }
+        public void Updateacceuil(bool verif, mydbEntities Bdd)
+        {
+            foreach (acceuil acceuil in Bdd.acceuil.ToList()) 
+            {
+                if (acceuil.IDacceuil == IDacceuil)
+                    if (verif)
+                        acceuil.ReelDepart = DateTime.Now;
+                    else
+                        acceuil.ReelArriver = DateTime.Now;
+                    Bdd.SaveChanges();              
+            }
         }
     }
 }
